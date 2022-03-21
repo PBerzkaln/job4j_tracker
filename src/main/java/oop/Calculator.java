@@ -4,7 +4,7 @@ public class Calculator {
 
     private static int x = 5;
 
-    public static int sum(int y) {
+    public int sum(int y) {
         return x + y;
     }
 
@@ -12,11 +12,11 @@ public class Calculator {
         return  y - x;
     }
 
-    public static int multiply(int y) {
+    public int multiply(int y) {
         return y * x;
     }
 
-    public static int divide(int y) {
+    public int divide(int y) {
         return y / x;
     }
 
