@@ -1,6 +1,9 @@
 package oop;
 
 import org.junit.Test;
+
+import java.nio.channels.Pipe;
+
 import static org.junit.Assert.*;
 
 public class PointTest {
@@ -38,6 +41,24 @@ public class PointTest {
         Point b = new Point(-5, -7);
         double result = a.distance(b);
         double expected = 3.605551275463989;
+        assertEquals(expected, result, 0.01);
+    }
+
+    @Test
+    public void whenThisPoint568Another124ThenDistance6Point93() {
+        Point a = new Point(5, 6, 8);
+        Point b = new Point(1, 2, 4);
+        double result = a.distance3d(b);
+        double expected = 6.93;
+        assertEquals(expected, result, 0.01);
+    }
+
+    @Test
+    public void whenThisPointMinus2Minus5Minus3Point4AnotherMinus2Point1Minus3Minus7ThenDistance4Point12() {
+        Point a = new Point(-2, -5, -3.4);
+        Point b = new Point(-2.1, -3, -7);
+        double result = a.distance3d(b);
+        double expected = 4.12;
         assertEquals(expected, result, 0.01);
     }
 }
