@@ -1,6 +1,6 @@
 package ru.job4j.tracker;
 
-import javax.sound.midi.Track;
+import java.util.Arrays;
 
 public class Tracker {
     private final Item[] items = new Item[100];
@@ -26,5 +26,29 @@ public class Tracker {
             }
         }
         return rsl;
+    }
+
+    public Item[] findAll() {
+        Item[] rsl = new Item[this.items.length];
+        int count = 0;
+        for (int index = 0; index < size; index++) {
+            if (items[index] != null) {
+                rsl[count] = items[index];
+                count++;
+            }
+        }
+        return Arrays.copyOf(rsl, size);
+    }
+
+    public Item[] findByName(String key) {
+        Item[] rsl = new Item[this.items.length];
+        int count = 0;
+        for (int index = 0; index < size; index++) {
+            if (items[index].getName().equals(key)) {
+                rsl[count] = items[index];
+                count++;
+            }
+        }
+        return Arrays.copyOf(rsl, count);
     }
 }
