@@ -1,9 +1,9 @@
 package poly;
 
 public interface Transport {
-    String toGo(String yesNo);
+    void toGo();
 
-    int passengers(int number);
+    void passengers(int number);
 
-    int refuel(int amount, int rate);
+    int refuel(int amount);
 }

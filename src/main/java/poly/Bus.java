@@ -2,18 +2,16 @@ package poly;
 
 public class Bus implements Transport {
     @Override
-    public String toGo(String yesNo) {
-        return null;
+    public void toGo() {
     }
 
     @Override
-    public int passengers(int number) {
-        return 0;
+    public void passengers(int number) {
     }
 
     @Override
-    public int refuel(int amount, int rate) {
-        int price = rate * amount;
-        return price;
+    public int refuel(int amount) {
+        int rate = 55;
+        return amount * rate;
     }
 }
