@@ -1,6 +1,6 @@
 package poly;
 
-public class Bus implements Transport {
+public class Bus implements Transport, Vehicle {
     @Override
     public void toGo() {
         System.out.println("Автобус отправляется\n Двери закрываются");
@@ -15,5 +15,10 @@ public class Bus implements Transport {
     public int refuel(int amount) {
         int rate = 55;
         return amount * rate;
+    }
+
+    @Override
+    public void move() {
+        System.out.println(getClass().getSimpleName() + " едет по скоростной трассе.");
     }
 }
