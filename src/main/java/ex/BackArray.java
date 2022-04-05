@@ -8,8 +8,8 @@ public static void main(String[] args) {
         int middle = names.length / 2;
         for (int index = 0; index < middle; index++) {
         String temp = names[index];
-        names[index] = names[middle - index];
-        names[middle - index] = temp;
+        names[index] = names[middle - index - 1];
+        names[middle - index - 1] = temp;
         }
         System.out.println(Arrays.toString(names));
         }
