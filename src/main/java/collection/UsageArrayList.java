@@ -1,4 +1,4 @@
-package encapsulation;
+package collection;
 
 import java.util.ArrayList;
 
