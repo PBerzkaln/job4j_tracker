@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tracker {
-    //private final Item[] items = new Item[100];
     ArrayList<Item> items = new ArrayList<>();
     private int ids = 1;
-    //private int size = 0;
+    /*private final Item[] items = new Item[100];
+    private int size = 0;*/
 
     public Tracker() {
     }
 
     public Item add(Item item) {
         item.setId(ids++);
-        //items[size++] = item;
+        /*items[size++] = item;*/
         items.add(item);
         return item;
     }
