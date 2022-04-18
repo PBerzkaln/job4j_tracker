@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tracker {
-    ArrayList<Item> items = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
     private int ids = 1;
     /*private final Item[] items = new Item[100];
     private int size = 0;*/
-
-    public Tracker() {
-    }
 
     public Item add(Item item) {
         item.setId(ids++);
@@ -62,12 +59,10 @@ public class Tracker {
     }
 
     public List<Item> findByName(String key) {
-        ArrayList<Item> rsl = new ArrayList<>();
-        int count = 0;
+        List<Item> rsl = new ArrayList<>();
         for (Item item : items) {
             if (item.getName().equals(key)) {
-                rsl.add(count, item);
-                count++;
+                rsl.add(item);
             }
         }
         return List.copyOf(rsl);
