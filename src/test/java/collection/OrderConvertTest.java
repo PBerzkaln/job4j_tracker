@@ -14,7 +14,11 @@ public class OrderConvertTest {
     public void whenSingleOrder() {
         List<Order> orders = new ArrayList<>();
         orders.add(new Order("3sfe", "Dress"));
+        orders.add(new Order("3sfe", "Dress"));
+        orders.add(new Order("234", "Dinner"));
+        orders.add(new Order("234", "Dinner"));
         HashMap<String, Order> map = OrderConvert.process(orders);
         assertThat(map.get("3sfe"), is(new Order("3sfe", "Dress")));
+        assertTrue(map.size() != orders.size());
     }
 }
