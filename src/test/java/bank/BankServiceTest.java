@@ -20,8 +20,7 @@ public class BankServiceTest {
         User user = new User("3434", "Petr Arsentev");
         BankService bank = new BankService();
         bank.addUser(user);
-        bank.delUser(user.getPassport());
-        assertNull(null, bank.findByPassport(user.getPassport()));
+        assertTrue(bank.delUser(user.getPassport()));
     }
 
     @Test

@@ -12,9 +12,14 @@ public class BankService {
         users.putIfAbsent(user, new ArrayList<Account>());
     }
 
-    public void delUser(String passport) {
-        User key = findByPassport(passport);
-        users.remove(key);
+    public boolean delUser(String passport) {
+        boolean rsl = false;
+        if (findByPassport(passport) != null) {
+            User key = findByPassport(passport);
+            users.remove(key);
+            rsl = true;
+        }
+        return rsl;
     }
 
     public void addAccount(String passport, Account account) {
