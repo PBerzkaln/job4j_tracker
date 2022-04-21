@@ -15,8 +15,7 @@ public class BankService {
     public boolean delUser(String passport) {
         boolean rsl = false;
         if (findByPassport(passport) != null) {
-            User key = findByPassport(passport);
-            users.remove(key);
+            users.remove(findByPassport(passport));
             rsl = true;
         }
         return rsl;
@@ -41,8 +40,9 @@ public class BankService {
     }
 
     public Account findByRequisite(String passport, String requisite) {
-        if (findByPassport(passport) != null) {
-            for (Account account : users.get(findByPassport(passport))) {
+        User user = findByPassport(passport);
+        if (user != null) {
+            for (Account account : users.get(user)) {
                 if (account.getRequisite().equals(requisite)) {
                     return account;
                 }
@@ -54,10 +54,11 @@ public class BankService {
     public boolean transferMoney(String srcPassport, String srcRequisite,
                                  String destPassport, String destRequisite, double amount) {
         boolean rsl = false;
+        Account accountScr = findByRequisite(srcPassport, srcRequisite);
+        Account accountDest = findByRequisite(destPassport, destRequisite);
         if (findByRequisite(srcPassport, srcRequisite) != null
+                && findByRequisite(destPassport, destRequisite) != null
                 && findByRequisite(srcPassport, srcRequisite).getBalance() >= amount) {
-            Account accountScr = findByRequisite(srcPassport, srcRequisite);
-            Account accountDest = findByRequisite(destPassport, destRequisite);
             accountScr.setBalance(accountScr.getBalance() - amount);
             accountDest.setBalance(accountDest.getBalance() + amount);
             rsl = true;

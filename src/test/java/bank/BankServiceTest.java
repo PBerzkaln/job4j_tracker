@@ -16,7 +16,16 @@ public class BankServiceTest {
     }
 
     @Test
-    public void delUser() {
+    public void whenDelUserIsNotSuccessfully() {
+        User user = new User("3434", "Petr Arsentev");
+        BankService bank = new BankService();
+        bank.addUser(user);
+        bank.delUser(user.getPassport());
+        assertNull(null, bank.findByPassport(user.getPassport()));
+    }
+
+    @Test
+    public void delUserIsTrue() {
         User user = new User("3434", "Petr Arsentev");
         BankService bank = new BankService();
         bank.addUser(user);
