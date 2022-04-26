@@ -108,7 +108,7 @@ public class BankService {
     }
 
     /**
-     * Мето принимается на вход строки scrPassport, scrRequisite, destPassport,
+     * Метод принимает на вход строки scrPassport, scrRequisite, destPassport,
      * destRequisite, amount.
      * Далее в объекты accountScr, accountDest методом {@link #findByRequisite(String passport, String requisite)}
      * передаются account (банковские счета) донора и реципиента.
