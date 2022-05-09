@@ -65,44 +65,35 @@ public class BankService {
     }
 
     /**
-     * Метод принимает на вход сроку passport.
-     * Далее в объект key типа User циклом из Map (хранилища) выгружаются User (перечень пользователей).
-     * Затем key гетером по полю passport (паспортные данные пользователя) сравнивается поочередно
-     * с принятым на вход passport.
-     * Если результат сравнения true, то возвращается key.
-     * Если результат сравнения false, то возвращается null.
+     * Метод принимает на вход строку passport.
+     * Далее разворачивает ключи в stream и фильтрует их по аргументу passport.
      * @param passport паспортные данные пользователя
      * @return возвращает User из Map
      */
     public User findByPassport(String passport) {
-        for (User key : users.keySet()) {
-            if (key.getPassport().equals(passport)) {
-                return key;
-            }
-        }
-        return null;
+        return users.keySet().stream()
+                .filter(p -> p.getPassport().equals(passport))
+                .findFirst()
+                .orElse(null);
     }
 
     /**
-     * Метод принимает на вход строку passport и строку requisite (поле реквизиты банковского счета).
-     * Далее в объект user методом {@link #findByPassport(String passport)}
-     * записывается User (пользоваель) из Map (хранилища).
-     * Затем в переменую account в цикле передается user и потом
-     * account с помощью гетера поля requisite сравнивается с принятым на вход.
-     * Если результат сравнения true, то возвращается account.
-     * Если результат сравнения false, то возвращается null.
+     * Метод принимает на вход строку passport и строку requisite.
+     * Далее через метод {@link #findByPassport(String passport)} ищет user.
+     * Если user != 0, то разворачивает account в stream, затем фильтрует их
+     * по аргументу requisite.
      * @param passport паспортные данные пользователя
      * @param requisite реквизиты банковского счета
-     * @return возвращает true или false (результат попытки найти account)
+     * @return возвращает account или null
      */
     public Account findByRequisite(String passport, String requisite) {
         User user = findByPassport(passport);
         if (user != null) {
-            for (Account account : users.get(user)) {
-                if (account.getRequisite().equals(requisite)) {
-                    return account;
-                }
-            }
+            return users.get(user)
+                    .stream()
+                    .filter(account -> account.getRequisite().equals(requisite))
+                    .findFirst()
+                    .orElse(null);
         }
         return null;
     }
