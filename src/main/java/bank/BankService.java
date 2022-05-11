@@ -1,9 +1,6 @@
 package bank;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Класс описывает работу хранилища банковских счетов пользователей
@@ -37,9 +34,9 @@ public class BankService {
      */
     public boolean delUser(String passport) {
         boolean rsl = false;
-        User user = findByPassport(passport);
-        if (user != null) {
-            users.remove(user);
+        Optional<User> user = Optional.ofNullable(findByPassport(passport));
+        if (user.isPresent()) {
+            users.remove(user.get());
             rsl = true;
         }
         return rsl;
@@ -55,9 +52,9 @@ public class BankService {
      * @param account банковский счет
      */
     public void addAccount(String passport, Account account) {
-       User user = findByPassport(passport);
-       if (user != null) {
-           List<Account> value = users.get(user);
+       Optional<User> user = Optional.ofNullable(findByPassport(passport));
+       if (user.isPresent()) {
+           List<Account> value = users.get(user.get());
            if (!value.contains(account)) {
                value.add(account);
            }
@@ -87,15 +84,11 @@ public class BankService {
      * @return возвращает account или null
      */
     public Account findByRequisite(String passport, String requisite) {
-        User user = findByPassport(passport);
-        if (user != null) {
-            return users.get(user)
-                    .stream()
-                    .filter(account -> account.getRequisite().equals(requisite))
-                    .findFirst()
-                    .orElse(null);
-        }
-        return null;
+        Optional<User> user = Optional.ofNullable(findByPassport(passport));
+        return user.flatMap(value -> users.get(value)
+                .stream()
+                .filter(account -> account.getRequisite().equals(requisite))
+                .findFirst()).orElse(null);
     }
 
     /**
@@ -116,11 +109,11 @@ public class BankService {
     public boolean transferMoney(String srcPassport, String srcRequisite,
                                  String destPassport, String destRequisite, double amount) {
         boolean rsl = false;
-        Account accountScr = findByRequisite(srcPassport, srcRequisite);
-        Account accountDest = findByRequisite(destPassport, destRequisite);
-        if (accountScr != null && accountDest != null && accountScr.getBalance() >= amount) {
-            accountScr.setBalance(accountScr.getBalance() - amount);
-            accountDest.setBalance(accountDest.getBalance() + amount);
+        Optional<Account> accountScr = Optional.ofNullable(findByRequisite(srcPassport, srcRequisite));
+        Optional<Account> accountDest = Optional.ofNullable(findByRequisite(destPassport, destRequisite));
+        if (accountScr.isPresent() && accountDest.isPresent() && accountScr.get().getBalance() >= amount) {
+            accountScr.get().setBalance(accountScr.get().getBalance() - amount);
+            accountDest.get().setBalance(accountDest.get().getBalance() + amount);
             rsl = true;
         }
         return rsl;
