@@ -33,7 +33,8 @@ public class SqlTracker implements Store, AutoCloseable {
 
     @Override
     public Item add(Item item) {
-        try (PreparedStatement statement = makeStatement("INSERT INTO items(name, created) VALUES (?, ?)")) {
+        try (PreparedStatement statement = cn.prepareStatement("INSERT INTO items(name, created) VALUES (?, ?)",
+                Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, item.getName());
             statement.setTimestamp(2, Timestamp.valueOf(item.getCreated()));
             statement.execute();
@@ -51,9 +52,11 @@ public class SqlTracker implements Store, AutoCloseable {
     @Override
     public boolean replace(int id, Item item) {
         boolean rsl = false;
-        try (PreparedStatement statement = makeStatement("UPDATE items SET name = ? WHERE id = ?")) {
+        try (PreparedStatement statement = cn.prepareStatement(
+                "UPDATE items SET name = ?, created = ? WHERE id = ?")) {
             statement.setString(1, item.getName());
-            statement.setInt(2, id);
+            statement.setTimestamp(2, Timestamp.valueOf(item.getCreated()));
+            statement.setInt(3, id);
             rsl = statement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -64,7 +67,7 @@ public class SqlTracker implements Store, AutoCloseable {
     @Override
     public boolean delete(int id) {
         boolean rsl = false;
-        try (PreparedStatement statement = makeStatement("DELETE FROM items WHERE id = ?")) {
+        try (PreparedStatement statement = cn.prepareStatement("DELETE FROM items WHERE id = ?")) {
             statement.setInt(1, id);
             rsl = statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -76,7 +79,7 @@ public class SqlTracker implements Store, AutoCloseable {
     @Override
     public List<Item> findAll() {
         List<Item> items = new ArrayList<>();
-        try (PreparedStatement statement = makeStatement("SELECT * FROM items;")) {
+        try (PreparedStatement statement = cn.prepareStatement("SELECT * FROM items;")) {
             try (ResultSet itemSet = statement.executeQuery()) {
                 while (itemSet.next()) {
                     items.add(makeItem(itemSet));
@@ -91,7 +94,7 @@ public class SqlTracker implements Store, AutoCloseable {
     @Override
     public List<Item> findByName(String key) {
         List<Item> items = new ArrayList<>();
-        try (PreparedStatement statement = makeStatement("SELECT * FROM items WHERE name = ?;")) {
+        try (PreparedStatement statement = cn.prepareStatement("SELECT * FROM items WHERE name = ?;")) {
             statement.setString(1, key);
             try (ResultSet itemSet = statement.executeQuery()) {
                 while (itemSet.next()) {
@@ -107,7 +110,7 @@ public class SqlTracker implements Store, AutoCloseable {
     @Override
     public Item findById(int id) {
         Item item = null;
-        try (PreparedStatement statement = makeStatement("SELECT * FROM items WHERE id = ?;")) {
+        try (PreparedStatement statement = cn.prepareStatement("SELECT * FROM items WHERE id = ?;")) {
             statement.setInt(1, id);
             try (ResultSet itemSet = statement.executeQuery()) {
                 if (itemSet.next()) {
@@ -123,9 +126,5 @@ public class SqlTracker implements Store, AutoCloseable {
     private Item makeItem(ResultSet result) throws SQLException {
         return new Item(result.getInt(1), result.getString(2),
                     result.getTimestamp(3).toLocalDateTime());
-    }
-
-    private PreparedStatement makeStatement(String statement) throws SQLException {
-       return cn.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS);
     }
 }
