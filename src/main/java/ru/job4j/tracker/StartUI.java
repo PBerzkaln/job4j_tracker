@@ -42,7 +42,9 @@ public class StartUI {
                     new ShowAllAction(output),
                     new FindByIdAction(output),
                     new FindByNameAction(output),
-                    new ExitAction(output)
+                    new ExitAction(output),
+                    new MassCreateAction(output),
+                    new MassDeleteAction(output)
             );
             new StartUI(output).init(input, tracker, actions);
         } catch (Exception e) {
