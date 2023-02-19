@@ -22,7 +22,6 @@ public class EditActionMockitoTest {
         MockitoAnnotations.openMocks(this);
     }
 
-
     @Test
     public void execute() {
         tracker.add(new Item("Deleted item"));
