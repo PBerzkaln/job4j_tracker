@@ -78,7 +78,7 @@ public class HibernateRun {
          * Обратите внимание Hibernate собирает объект сам.
          * Мы не прописываем, какие поля нужно достать.
          */
-        List<Item> result = session.createQuery("from ru.job4j.tracker.Item", Item.class).list();
+        List<Item> result = session.createQuery("from Item", Item.class).list();
         session.getTransaction().commit();
         session.close();
         return result;
