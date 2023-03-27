@@ -1,11 +1,14 @@
 package ru.job4j.tracker;
 
 import lombok.Data;
+import ru.job4j.tracker.toone.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Entity указывает, что это модель,
@@ -26,6 +29,20 @@ public class Item {
     private int id;
     private String name;
     private LocalDateTime created = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+    /**
+     * <br>name - указывает на таблицу, где идет связь вторичных ключей.
+     * <br>joinColumns - определяет ключ родительского объекта.
+     * В данном примере Item.id.
+     * <br>inverseJoinColumns - определяет ключ объекта,
+     * который мы загружаем в родительский объект.
+     */
+    @ManyToMany
+    @JoinTable(
+            name = "participates",
+            joinColumns = {@JoinColumn(name = "item_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+    )
+    private List<User> participates = new ArrayList<>();
 
     public Item() {
     }
