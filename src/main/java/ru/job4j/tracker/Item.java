@@ -1,6 +1,7 @@
 package ru.job4j.tracker;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import ru.job4j.tracker.toone.User;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ import java.util.List;
 @Entity
 @Table(name = "items")
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Item {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MMMM-EEEE-yyyy HH:mm:ss");
     /**
@@ -26,6 +28,7 @@ public class Item {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private int id;
     private String name;
     private LocalDateTime created = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
